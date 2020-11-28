@@ -58,12 +58,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+   
+    - name: Set branch name (pull request)
+      if: ${{ github.event}} = pull_request
+      run: echo '::set-output name=BRANCH::${{ github.event.pull_request.base.ref }}'
+      id: ${{github.event.action}}
+    - name: Set branch name (push)
+      if: ${{ github.event }} = push
+      run: echo '::set-output name=BRANCH::${GITHUB_REF##*/}'
+      id: ${{github.event.action}}
+
+    - name: Show branch name
+      run: echo "The branch is ${{ steps.${{github.event.action}}.outputs.BRANCH }}"
 
     - name: Mount bazel cache
       uses: actions/cache@v2
       with:
         path: /home/runner/.cache/bazel
-        key: bazel
+        key: ${{ steps.${{github.event.action}}.outputs.BRANCH }}-hashFiles("WORKSPACE")-hashFiles("BUILD")-hashFiles("**/BUILD.bazel")-hashFiles("**/*.bzl")
+        restore_keys: |
+          ${{ steps.${{github.event.action}}.outputs.BRANCH }}
 
     - name: Test
       run: |
