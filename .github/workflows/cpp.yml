@@ -63,7 +63,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: /home/runner/.cache/bazel
-        key: hashFiles("WORKSPACE")-hashFiles("BUILD")-hashFiles("**/BUILD.bazel")-hashFiles("**/*.bzl")
+        key: hashFiles("WORKSPACE")-hashFiles("BUILD")-hashFiles("**/BUILD.bazel")-hashFiles("**/*.bzl")-hashFiles("**/*.BUILD")
 
     - name: Test
       run: |
