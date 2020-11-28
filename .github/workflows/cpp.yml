@@ -64,9 +64,9 @@ jobs:
       run: echo '::set-output name=BRANCH::${{ github.event.pull_request.base.ref }}'
       id: ${{ github.event_name }}
     - name: Set branch name (push)
-      if: ${{ github.event_name == 'push' }}
+      if: "${{ github.event_name == 'push' }}"
       run: echo '::set-output name=BRANCH::${GITHUB_REF##*/}'
-      id: ${{ github.event_name }}
+      id: "${{ github.event_name }}"
 
     - name: Show branch name
       run: echo "The branch is ${{ steps.${{github.event.action}}.outputs.BRANCH }}"
